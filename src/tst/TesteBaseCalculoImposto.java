@@ -9,6 +9,9 @@ import org.junit.runners.Parameterized;
 
 import app.IRPF;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 @RunWith(Parameterized.class)
 public class TesteBaseCalculoImposto {
 

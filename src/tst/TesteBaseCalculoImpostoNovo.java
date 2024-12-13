@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import app.IRPF;
 
-public class TesteBaseCalculoImposto {
+public class TesteBaseCalculoImpostoNovo {
 
     IRPF irpf;
 
