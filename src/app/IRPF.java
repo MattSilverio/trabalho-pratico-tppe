@@ -290,5 +290,11 @@ public class IRPF {
 		return soma;
 	}
 	
-	
+	/**
+     * Método que calcula a base de cálculo do imposto, considerando rendimentos tributáveis e deduções.
+     * @return a base de cálculo para o imposto
+     */
+    public float calcularBaseCalculoImposto() {
+			return getTotalRendimentosTributaveis() - getDeducao() - getTotalOutrasDeducoes();
+	}
 }
