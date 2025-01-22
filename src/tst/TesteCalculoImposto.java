@@ -2,64 +2,51 @@ package tst;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import app.IRPF;
 
+@RunWith(Parameterized.class)
 public class TesteCalculoImposto {
 
-    IRPF irpf;
+    private IRPF irpf;
+    private final float rendimento;
+    private final float esperado;
+
+    // Construtor para receber os parâmetros
+    public TesteCalculoImposto(float rendimento, float esperado) {
+        this.rendimento = rendimento;
+        this.esperado = esperado;
+    }
 
     @Before
     public void setup() {
         irpf = new IRPF();
+        irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, rendimento);
+    }
+
+    // Parâmetros para os testes
+    @Parameterized.Parameters
+    public static Collection<Object[]> parametros() {
+        return Arrays.asList(new Object[][] {
+                {0, 0},
+                { 1900.0f, 0.0f },                           // Isento
+                { 2500.0f, (2500.0f - 1903.98f) * 0.075f },  // Faixa 1
+                { 3500.0f, (2826.65f - 1903.98f) * 0.075f + (3500.0f - 2826.65f) * 0.15f }, // Faixa 2
+                { 4000.0f, (2826.65f - 1903.98f) * 0.075f + (3751.05f - 2826.65f) * 0.15f + (4000.0f - 3751.05f) * 0.225f }, // Faixa 3
+                { 6000.0f, (2826.65f - 1903.98f) * 0.075f + (3751.05f - 2826.65f) * 0.15f + (4664.68f - 3751.05f) * 0.225f + (6000.0f - 4664.68f) * 0.275f } // Faixa 4
+        });
     }
 
     @Test
-    public void testCalculoImpostoFaixas() {
-        irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, 5000.0f);
-        irpf.criarRendimento("Investimentos", IRPF.TRIBUTAVEL, 2000.0f);
-
-        irpf.cadastrarContribuicaoPrevidenciaria(500.0f);
-        irpf.cadastrarDependente("Filho", "Filho"); 
-
-        float baseCalculo = irpf.calcularBaseCalculoImposto();
-        assertEquals(6310.41f, baseCalculo, 0.01f);
-
-        float imposto = calcularImposto(baseCalculo);
-        assertEquals(1420.08f, imposto, 0.01f);
-    }
-
-    private float calcularImposto(float baseCalculo) {
-        float imposto = 0;
-
-        if (baseCalculo <= 22847.76f) {
-            return 0;
-        }
-
-        if (baseCalculo > 22847.76f && baseCalculo <= 33919.80f) {
-            imposto += (baseCalculo - 22847.76f) * 0.075f;
-        } else {
-            imposto += (33919.80f - 22847.76f) * 0.075f;
-        }
-
-        if (baseCalculo > 33919.80f && baseCalculo <= 45012.60f) {
-            imposto += (baseCalculo - 33919.80f) * 0.15f;
-        } else if (baseCalculo > 45012.60f) {
-            imposto += (45012.60f - 33919.80f) * 0.15f;
-        }
-
-        if (baseCalculo > 45012.60f && baseCalculo <= 55976.16f) {
-            imposto += (baseCalculo - 45012.60f) * 0.225f;
-        } else if (baseCalculo > 55976.16f) {
-            imposto += (55976.16f - 45012.60f) * 0.225f;
-        }
-
-        if (baseCalculo > 55976.16f) {
-            imposto += (baseCalculo - 55976.16f) * 0.275f;
-        }
-
-        return imposto;
+    public void testCalculoImposto() {
+        float imposto = irpf.calcularImposto();
+        assertEquals(esperado, imposto, 0.01f);
     }
 }

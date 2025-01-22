@@ -297,4 +297,45 @@ public class IRPF {
     public float calcularBaseCalculoImposto() {
 			return getTotalRendimentosTributaveis() - getDeducao() - getTotalOutrasDeducoes();
 	}
+
+	private static final float[] FAIXAS = {1903.98f, 2826.65f, 3751.05f, 4664.68f};
+	private static final float[] ALIQUOTAS = {0.075f, 0.15f, 0.225f, 0.275f};
+
+	/**
+	 * Calcula o imposto devido com base nas faixas de imposto.
+	 * @return valor do imposto devido
+	 */
+	public float calcularImposto() {
+		float baseCalculo = calcularBaseCalculoImposto();
+
+		if (baseCalculo <= FAIXAS[0]) {
+			return 0;
+		}
+
+		float imposto = 0;
+		for (int i = FAIXAS.length - 1; i >= 0; i--) {
+			if (baseCalculo > FAIXAS[i]) {
+				imposto += (baseCalculo - FAIXAS[i]) * ALIQUOTAS[i];
+				baseCalculo = FAIXAS[i];
+			}
+		}
+
+		return imposto;
+	}
+
+	/**
+	 * Calcula a alíquota efetiva do imposto de renda.
+	 * A alíquota efetiva é a porcentagem do imposto devido em relação à base de cálculo.
+	 * @return alíquota efetiva em percentual
+	 */
+	public float calcularAliquotaEfetiva() {
+		float baseCalculo = calcularBaseCalculoImposto();
+		if (baseCalculo <= 0) {
+			return 0; // Se a base for zero ou negativa, a alíquota é zero
+		}
+
+		float impostoDevido = calcularImposto();
+		return (impostoDevido / baseCalculo) * 100;
+	}
+
 }

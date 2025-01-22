@@ -1,69 +1,48 @@
 package tst;
 
 import static org.junit.Assert.assertEquals;
-
+import java.util.Arrays;
+import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import app.IRPF;
 
+@RunWith(Parameterized.class)
 public class TesteAliquotaEfetiva {
 
-    IRPF irpf;
+    private IRPF irpf;
+    private float rendimento;
+    private float deducao;
+    private float aliquotaEsperada;
+
+    public TesteAliquotaEfetiva(float rendimento, float deducao, float aliquotaEsperada) {
+        this.rendimento = rendimento;
+        this.deducao = deducao;
+        this.aliquotaEsperada = aliquotaEsperada;
+    }
 
     @Before
-    public void setup() {
+    public void setUp() {
         irpf = new IRPF();
+        irpf.criarRendimento("Rendimento", IRPF.TRIBUTAVEL, rendimento);
+        irpf.cadastrarDeducaoIntegral("Dedução", deducao);
+    }
+
+    @Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                { 2500, 416.67f, 0.64f },
+                { 3333.33f, 833.33f, 1.78f },
+                { 1666.67f, 2083.33f, 0.0f }, // Caso: dedução maior que rendimento
+                { 0, 0, 0.0f } // Caso: sem rendimentos
+        });
     }
 
     @Test
-    public void testAliquotaEfetivaSemDeducoes() {
-        irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, 5000);
-        irpf.criarRendimento("Bolsas", IRPF.NAOTRIBUTAVEL, 2000);
-
-        float baseCalculo = irpf.calcularBaseCalculoImposto();
-        float impostoDevido = calcularImposto(baseCalculo);
-        float aliquotaEfetiva = impostoDevido / irpf.getTotalRendimentosTributaveis();
-
-        assertEquals(0.15, aliquotaEfetiva, 0.01); 
-    }
-
-    @Test
-    public void testAliquotaEfetivaComDeducoes() {
-        irpf.criarRendimento("Salário", IRPF.TRIBUTAVEL, 10000);
-        irpf.cadastrarContribuicaoPrevidenciaria(1500);
-        irpf.cadastrarDependente("Miguel", "Filho");
-
-        float baseCalculo = irpf.calcularBaseCalculoImposto();
-        float impostoDevido = calcularImposto(baseCalculo);
-        float aliquotaEfetiva = impostoDevido / irpf.getTotalRendimentosTributaveis();
-
-        assertEquals(0.10, aliquotaEfetiva, 0.01); 
-    }
-
-    @Test
-    public void testAliquotaEfetivaComOutrasDeducoes() {
-        irpf.criarRendimento("Pro-labore", IRPF.TRIBUTAVEL, 8000);
-        irpf.cadastrarDeducaoIntegral("Doações", 500);
-
-        float baseCalculo = irpf.calcularBaseCalculoImposto();
-        float impostoDevido = calcularImposto(baseCalculo);
-        float aliquotaEfetiva = impostoDevido / irpf.getTotalRendimentosTributaveis();
-
-        assertEquals(0.12, aliquotaEfetiva, 0.01);
-    }
-
-    private float calcularImposto(float baseCalculo) {
-        if (baseCalculo <= 1903.98) {
-            return 0;
-        } else if (baseCalculo <= 2826.65) {
-            return (baseCalculo - 1903.98f) * 0.075f;
-        } else if (baseCalculo <= 3751.05) {
-            return (baseCalculo - 2826.65f) * 0.15f + 69.20f;
-        } else if (baseCalculo <= 4664.68) {
-            return (baseCalculo - 3751.05f) * 0.225f + 207.86f;
-        } else {
-            return (baseCalculo - 4664.68f) * 0.275f + 413.42f;
-        }
+    public void testCalcularAliquotaEfetiva() {
+        assertEquals(aliquotaEsperada, irpf.calcularAliquotaEfetiva(), 0.01);
     }
 }
