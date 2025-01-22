@@ -235,22 +235,26 @@ public class IRPF {
 	 * @param valorDeducao valor da deducao
 	 */
 	public void cadastrarDeducaoIntegral(String nome, float valorDeducao) {
-		String temp[] = new String[nomesDeducoes.length + 1];
-		for (int i=0; i<nomesDeducoes.length; i++) {
-			temp[i] = nomesDeducoes[i]; 
-		}
-		temp[nomesDeducoes.length] = nome;
-		nomesDeducoes = temp;
-		
-		float temp2[] = new float[valoresDeducoes.length + 1];
-		for (int i=0; i<valoresDeducoes.length; i++) {
-			temp2[i] = valoresDeducoes[i]; 
-		}
-		temp2[valoresDeducoes.length] = valorDeducao;
-		valoresDeducoes = temp2;
+		nomesDeducoes = adicionarAoArray(nomesDeducoes, nome);
+		valoresDeducoes = adicionarAoArray(valoresDeducoes, valorDeducao);
 	}
 
-	
+	private String[] adicionarAoArray(String[] array, String valor) {
+		String[] temp = new String[array.length + 1];
+		System.arraycopy(array, 0, temp, 0, array.length);
+		temp[array.length] = valor;
+		return temp;
+	}
+
+	private float[] adicionarAoArray(float[] array, float valor) {
+		float[] temp = new float[array.length + 1];
+		System.arraycopy(array, 0, temp, 0, array.length);
+		temp[array.length] = valor;
+		return temp;
+	}
+
+
+
 	/**
 	 * Método para pesquisar uma deducao pelo seu nome. 
 	 * @param substring do nome da deducao a ser pesquisada
