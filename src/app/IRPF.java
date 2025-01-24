@@ -21,7 +21,7 @@ public class IRPF {
 	private String[] nomesDeducoes;
 	private float[] valoresDeducoes;
 
-	private DependenteManager dependenteManager;
+	private final DependenteManager dependenteManager;
 
 	public IRPF() {
 		nomeRendimento = new String[0];
