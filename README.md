@@ -123,6 +123,16 @@ Com base nos artefatos entregues pelo grupo na primeira parte do trabalho, os co
 |           | Extrair Classe                      | IRPF                                  |
 |           | Substituir método por objeto-método | IRPF.cadastrarDependente()            |
 
+Conclusão:
+
+Todas as operações de refatoração solicitadas foram realizadas:
+
+- Extrair Método: cadastrarDeducaoIntegral foi extraído para DeducaoManager.
+
+- Extrair Classe: A classe IRPF foi refatorada para delegar responsabilidades para classes especializadas(ContribuicaoManager, DeducaoManager, DependenteManager, PensaoAlimenticiaManager, RendimentoManager).
+
+- Substituir Método por Objeto-Método: O método cadastrarDependente foi refatorado para usar um objeto-método(CadastroDependente).
+
 
 ## Entrega 3 - Depuração de código
 
