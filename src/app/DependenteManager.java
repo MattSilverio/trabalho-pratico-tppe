@@ -12,6 +12,11 @@ public class DependenteManager {
     }
 
     public void cadastrarDependente(String nome, String parentesco) {
+        CadastroDependente cadastroDependente = new CadastroDependente(nome, parentesco, this);
+        cadastroDependente.executar();
+    }
+
+    void adicionarDependente(String nome, String parentesco) {
         nomesDependentes = adicionarAoArray(nomesDependentes, nome);
         parentescosDependentes = adicionarAoArray(parentescosDependentes, parentesco);
         numDependentes++;
