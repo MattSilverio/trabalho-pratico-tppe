@@ -5,20 +5,18 @@ public class IRPF {
 	public static final boolean TRIBUTAVEL = true;
 	public static final boolean NAOTRIBUTAVEL = false;
 
-	private float totalPensaoAlimenticia;
-
 	private final DependenteManager dependenteManager;
 	private final DeducaoManager deducaoManager;
 	private final RendimentoManager rendimentoManager;
 	private final ContribuicaoManager contribuicaoManager;
+	private final PensaoAlimenticiaManager pensaoAlimenticiaManager;
 
 	public IRPF() {
-		totalPensaoAlimenticia = 0f;
-
 		dependenteManager = new DependenteManager();
 		deducaoManager = new DeducaoManager();
 		rendimentoManager = new RendimentoManager();
 		contribuicaoManager = new ContribuicaoManager();
+		pensaoAlimenticiaManager = new PensaoAlimenticiaManager();
 	}
 
 	/**
@@ -84,7 +82,7 @@ public class IRPF {
 
 		total += numDependentes * 189.59f; // Dedução por dependente
 		total += contribuicaoManager.getTotalContribuicoes(); // Dedução por contribuição previdenciária
-		total += totalPensaoAlimenticia; // Dedução por pensão alimentícia
+		total += pensaoAlimenticiaManager.getTotalPensaoAlimenticia(); // Dedução por pensão alimentícia
 		total += deducaoManager.getTotalOutrasDeducoes(); // Dedução por outras deduções
 
 		return total;
@@ -144,7 +142,7 @@ public class IRPF {
 		String parentesco = getParentesco(dependente);
 		if (parentesco.toLowerCase().contains("filh") ||
 				parentesco.toLowerCase().contains("alimentand")) {
-			totalPensaoAlimenticia += valor;
+			pensaoAlimenticiaManager.cadastrarPensaoAlimenticia(valor);
 		}
 	}
 
@@ -153,7 +151,7 @@ public class IRPF {
 	 * @return valor total de pensoes alimenticias
 	 */
 	public float getTotalPensaoAlimenticia() {
-		return totalPensaoAlimenticia;
+		return pensaoAlimenticiaManager.getTotalPensaoAlimenticia();
 	}
 
 	/**
