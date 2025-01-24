@@ -5,12 +5,6 @@ public class IRPF {
 	public static final boolean TRIBUTAVEL = true;
 	public static final boolean NAOTRIBUTAVEL = false;
 
-	private String[] nomeRendimento;
-	private boolean[] rendimentoTributavel;
-	private float[] valorRendimento;
-	private int numRendimentos;
-	private float totalRendimentos;
-
 	private int numContribuicaoPrevidenciaria;
 	private float totalContribuicaoPrevidenciaria;
 
@@ -18,12 +12,9 @@ public class IRPF {
 
 	private final DependenteManager dependenteManager;
 	private final DeducaoManager deducaoManager;
+	private final RendimentoManager rendimentoManager;
 
 	public IRPF() {
-		nomeRendimento = new String[0];
-		rendimentoTributavel = new boolean[0];
-		valorRendimento = new float[0];
-
 		numContribuicaoPrevidenciaria = 0;
 		totalContribuicaoPrevidenciaria = 0f;
 
@@ -31,6 +22,7 @@ public class IRPF {
 
 		dependenteManager = new DependenteManager();
 		deducaoManager = new DeducaoManager();
+		rendimentoManager = new RendimentoManager();
 	}
 
 	/**
@@ -41,12 +33,7 @@ public class IRPF {
 	 * @param valor valor do rendimento a ser cadastrado
 	 */
 	public void criarRendimento(String nome, boolean tributavel, float valor) {
-		nomeRendimento = adicionarAoArray(nomeRendimento, nome);
-		rendimentoTributavel = adicionarAoArray(rendimentoTributavel, tributavel);
-		valorRendimento = adicionarAoArray(valorRendimento, valor);
-
-		this.numRendimentos += 1;
-		this.totalRendimentos += valor;
+		rendimentoManager.criarRendimento(nome, tributavel, valor);
 	}
 
 	/**
@@ -54,7 +41,7 @@ public class IRPF {
 	 * @return numero de rendimentos
 	 */
 	public int getNumRendimentos() {
-		return numRendimentos;
+		return rendimentoManager.getNumRendimentos();
 	}
 
 	/**
@@ -62,7 +49,7 @@ public class IRPF {
 	 * @return valor total dos rendimentos
 	 */
 	public float getTotalRendimentos() {
-		return totalRendimentos;
+		return rendimentoManager.getTotalRendimentos();
 	}
 
 	/**
@@ -70,13 +57,7 @@ public class IRPF {
 	 * @return valor total dos rendimentos tributáveis
 	 */
 	public float getTotalRendimentosTributaveis() {
-		float totalRendimentosTributaveis = 0;
-		for (int i = 0; i < rendimentoTributavel.length; i++) {
-			if (rendimentoTributavel[i]) {
-				totalRendimentosTributaveis += valorRendimento[i];
-			}
-		}
-		return totalRendimentosTributaveis;
+		return rendimentoManager.getTotalRendimentosTributaveis();
 	}
 
 	/**
