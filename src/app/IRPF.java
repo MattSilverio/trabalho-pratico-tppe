@@ -5,24 +5,20 @@ public class IRPF {
 	public static final boolean TRIBUTAVEL = true;
 	public static final boolean NAOTRIBUTAVEL = false;
 
-	private int numContribuicaoPrevidenciaria;
-	private float totalContribuicaoPrevidenciaria;
-
 	private float totalPensaoAlimenticia;
 
 	private final DependenteManager dependenteManager;
 	private final DeducaoManager deducaoManager;
 	private final RendimentoManager rendimentoManager;
+	private final ContribuicaoManager contribuicaoManager;
 
 	public IRPF() {
-		numContribuicaoPrevidenciaria = 0;
-		totalContribuicaoPrevidenciaria = 0f;
-
 		totalPensaoAlimenticia = 0f;
 
 		dependenteManager = new DependenteManager();
 		deducaoManager = new DeducaoManager();
 		rendimentoManager = new RendimentoManager();
+		contribuicaoManager = new ContribuicaoManager();
 	}
 
 	/**
@@ -87,7 +83,7 @@ public class IRPF {
 		int numDependentes = dependenteManager.getNumDependentes();
 
 		total += numDependentes * 189.59f; // Dedução por dependente
-		total += totalContribuicaoPrevidenciaria; // Dedução por contribuição previdenciária
+		total += contribuicaoManager.getTotalContribuicoes(); // Dedução por contribuição previdenciária
 		total += totalPensaoAlimenticia; // Dedução por pensão alimentícia
 		total += deducaoManager.getTotalOutrasDeducoes(); // Dedução por outras deduções
 
@@ -99,8 +95,7 @@ public class IRPF {
 	 * @param contribuicao valor da contribuição previdenciária oficial
 	 */
 	public void cadastrarContribuicaoPrevidenciaria(float contribuicao) {
-		numContribuicaoPrevidenciaria++;
-		totalContribuicaoPrevidenciaria += contribuicao;
+		contribuicaoManager.cadastrarContribuicao(contribuicao);
 	}
 
 	/**
@@ -109,7 +104,7 @@ public class IRPF {
 	 * @return numero de contribuições realizadas
 	 */
 	public int getNumContribuicoesPrevidenciarias() {
-		return numContribuicaoPrevidenciaria;
+		return contribuicaoManager.getNumContribuicoes();
 	}
 
 	/**
@@ -117,7 +112,7 @@ public class IRPF {
 	 * @return valor total de contribuições oficiais
 	 */
 	public float getTotalContribuicoesPrevidenciarias() {
-		return totalContribuicaoPrevidenciaria;
+		return contribuicaoManager.getTotalContribuicoes();
 	}
 
 	/**
@@ -244,27 +239,5 @@ public class IRPF {
 
 		float impostoDevido = calcularImposto();
 		return (impostoDevido / baseCalculo) * 100;
-	}
-
-	// Métodos auxiliares para adicionar elementos aos arrays
-	private String[] adicionarAoArray(String[] array, String valor) {
-		String[] temp = new String[array.length + 1];
-		System.arraycopy(array, 0, temp, 0, array.length);
-		temp[array.length] = valor;
-		return temp;
-	}
-
-	private boolean[] adicionarAoArray(boolean[] array, boolean valor) {
-		boolean[] temp = new boolean[array.length + 1];
-		System.arraycopy(array, 0, temp, 0, array.length);
-		temp[array.length] = valor;
-		return temp;
-	}
-
-	private float[] adicionarAoArray(float[] array, float valor) {
-		float[] temp = new float[array.length + 1];
-		System.arraycopy(array, 0, temp, 0, array.length);
-		temp[array.length] = valor;
-		return temp;
 	}
 }
