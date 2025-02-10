@@ -135,7 +135,85 @@ Todas as operações de refatoração solicitadas foram realizadas:
 
 
 ## Entrega 3 - Depuração de código
+**1. Princípios de Bom Projeto de Código e Relação com os "Maus Cheiros" de Fowler**
 
-**Valor:** 20 pontos  
-**Data de entrega:** a ser definida
+---
+
+### **1. Simplicidade**  
+Manter o código simples, claro e objetivo, evitando complexidade desnecessária.  
+
+**Maus Cheiros:**  
+- **Método Longo:** Dificulta a compreensão.  
+- **Classe Grande:** Acumula muitas responsabilidades.  
+- **Generalização Especulativa:** Cria estruturas sem necessidade atual.
+---
+
+### **2. Elegância**  
+Código deve ser bem estruturado, legível e organizado.  
+
+**Maus Cheiros:**  
+- **Agrupamentos de Dados:** Repetição desnecessária de dados.  
+- **Decisões Complexas:** Uso excessivo de `switch`/`if-else` em vez de polimorfismo.  
+- **Classe Ociosa:** Pouca utilidade, aumentando a complexidade sem necessidade.  
+
+---
+
+### **3. Modularidade**  
+O código deve ser organizado em módulos coesos e independentes.  
+
+**Maus Cheiros:**  
+- **Mudanças Divergentes:** Classe alterada por múltiplas razões, falta de coesão.  
+- **Inveja de Funcionalidade:** Método depende mais de outra classe do que da própria.  
+- **Cirurgia de Espingarda:** Uma mudança impacta várias classes, indicando fragilidade na modularização.
+
+---
+
+### **4. Boas Interfaces**  
+Interfaces devem ser claras, mínimas e bem encapsuladas, definindo contratos específicos.  
+
+**Maus Cheiros:**  
+- **Intimidade Inapropriada:** Classes expõem detalhes internos entre si.  
+- **Cadeias de Mensagens:** Encadeamento excessivo de chamadas, revelando implementações internas.  
+- **Violação de Segregação de Interface:** Interfaces grandes e genéricas, sem especialização adequada.
+
+---
+
+### **5. Extensibilidade**  
+Facilidade para adicionar funcionalidades sem afetar o sistema existente.  
+
+**Maus Cheiros:**  
+- **Hierarquias Paralelas:** Alterações em uma classe exigem mudanças em outra.  
+- **Rigidez:** Dificuldade de modificação devido a dependências rígidas.  
+- **Classe Base Frágil:** Mudanças na classe base impactam negativamente as subclasses.  
+
+---
+
+### **6. Evitar Duplicação**  
+Evitar redundância de código, seguindo o princípio DRY (*Don’t Repeat Yourself*).  
+
+**Maus Cheiros:**  
+- **Código Duplicado:** Trechos iguais ou semelhantes em diferentes partes do código.  
+- **Cirurgia de Espingarda:** Mudança que exige ajustes repetidos em vários locais.
+
+---
+
+### **7. Portabilidade**  
+Código deve ser adaptável a diferentes ambientes ou plataformas.  
+
+**Maus Cheiros:**  
+- **Obsessão por Primitivas:** Uso excessivo de tipos primitivos, dificultando abstração e portabilidade.  
+- **Constantes Fixas:** Valores hard-coded, como caminhos de arquivos, que limitam a flexibilidade do código. 
+
+---
+
+### **8. Código Idiomático e Bem Documentado**  
+Seguir convenções da linguagem e documentar claramente decisões de projeto.  
+
+**Maus Cheiros:**  
+- **Comentários Excessivos:** Explicações desnecessárias para código que deveria ser autoexplicativo.  
+- **Classe de Dados:** Classes com apenas campos e getters/setters, sem comportamento relevante.  
+- **Construtos Não Idiomáticos:** Implementação manual de recursos já oferecidos pela linguagem.
+
+---
+
 
