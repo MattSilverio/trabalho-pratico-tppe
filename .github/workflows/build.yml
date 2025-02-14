@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Compilar código
-        run: javac -d out/production/app $(find src -name "*.java")
+        run: javac -d out/production/app $(find src/app -name "*.java")
 
       - name: Debug - Listar arquivos compilados
         run: ls -R out/production/app
