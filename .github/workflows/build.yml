@@ -19,10 +19,13 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'temurin'  # Specify the distribution
+          distribution: 'temurin'
+
+      - name: Install Gradle
+        run: sudo apt-get install gradle
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: gradle build
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
