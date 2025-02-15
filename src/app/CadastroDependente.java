@@ -12,6 +12,15 @@ public class CadastroDependente {
     }
 
     public void executar() {
-        dependenteManager.adicionarDependente(nome, parentesco);
+        dependenteManager.nomesDependentes = adicionarAoArray(dependenteManager.nomesDependentes, nome);
+        dependenteManager.parentescosDependentes = adicionarAoArray(dependenteManager.parentescosDependentes, parentesco);
+        dependenteManager.numDependentes++;
+    }
+
+    private String[] adicionarAoArray(String[] array, String valor) {
+        String[] temp = new String[array.length + 1];
+        System.arraycopy(array, 0, temp, 0, array.length);
+        temp[array.length] = valor;
+        return temp;
     }
 }

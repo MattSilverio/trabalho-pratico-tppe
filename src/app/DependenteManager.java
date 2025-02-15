@@ -1,9 +1,9 @@
 package app;
 
 public class DependenteManager {
-    private String[] nomesDependentes;
-    private String[] parentescosDependentes;
-    private int numDependentes;
+    String[] nomesDependentes;
+    String[] parentescosDependentes;
+    int numDependentes;
 
     public DependenteManager() {
         nomesDependentes = new String[0];
@@ -12,14 +12,7 @@ public class DependenteManager {
     }
 
     public void cadastrarDependente(String nome, String parentesco) {
-        CadastroDependente cadastroDependente = new CadastroDependente(nome, parentesco, this);
-        cadastroDependente.executar();
-    }
-
-    void adicionarDependente(String nome, String parentesco) {
-        nomesDependentes = adicionarAoArray(nomesDependentes, nome);
-        parentescosDependentes = adicionarAoArray(parentescosDependentes, parentesco);
-        numDependentes++;
+        new CadastroDependente(nome, parentesco, this).executar();
     }
 
     public int getNumDependentes() {
@@ -40,12 +33,5 @@ public class DependenteManager {
                 return parentescosDependentes[i];
         }
         return null;
-    }
-
-    private String[] adicionarAoArray(String[] array, String valor) {
-        String[] temp = new String[array.length + 1];
-        System.arraycopy(array, 0, temp, 0, array.length);
-        temp[array.length] = valor;
-        return temp;
     }
 }
